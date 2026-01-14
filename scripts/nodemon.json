@@ -1,0 +1,11 @@
+{
+    "watch": ["src", "dev"],
+    "ext": "ts, tsx",
+    "ignore": ["**/node_modules"],
+    "exec": "node scripts/dev.js && node --enable-source-maps dist/server.js" ,
+    "quiet": true,
+    "cwd":"./dist",
+    "env": {
+        "NODE_ENV": "development"
+    }
+}

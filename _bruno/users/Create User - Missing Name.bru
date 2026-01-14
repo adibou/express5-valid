@@ -1,0 +1,17 @@
+meta {
+  name: Create User - Missing Name
+  type: http
+  seq: 3
+}
+
+post {
+  url: {{baseUrl}}/users
+  body: json
+  auth: none
+}
+
+body:json {
+  {
+    "age": 25
+  }
+}

@@ -1,0 +1,20 @@
+meta {
+  name: Validate Object - Invalid
+  type: http
+  seq: 2
+}
+
+post {
+  url: {{baseUrl}}/object
+  body: json
+  auth: inherit
+}
+
+body:json {
+  {
+    "data": {
+      "id": -5,
+      "name": "AB"
+    }
+  }
+}

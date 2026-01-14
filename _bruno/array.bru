@@ -1,0 +1,22 @@
+meta {
+  name: array
+  type: http
+  seq: 2
+}
+
+post {
+  url: {{baseUrl}}/array
+  body: json
+  auth: inherit
+}
+
+body:json {
+  {
+    "items" : ["hello"]
+  }
+}
+
+settings {
+  encodeUrl: true
+  timeout: 0
+}

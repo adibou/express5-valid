@@ -1,0 +1,20 @@
+meta {
+  name: Create Users Batch
+  type: http
+  seq: 1
+}
+
+post {
+  url: {{baseUrl}}/users/batch
+  body: json
+  auth: inherit
+}
+
+body:json {
+  {
+    "users": [
+      { "id": 1, "name": "John", "email": "john@example.com" },
+      { "id": 2, "name": "Jane", "email": "jane@example.com" }
+    ]
+  }
+}
