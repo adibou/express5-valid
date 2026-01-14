@@ -25,7 +25,9 @@
     "build": "node scripts/build.js",
     "test": "vitest",
     "test:run": "vitest run",
-    "check": "tsc --noEmit"
+    "check": "tsc --noEmit",
+    "lint": "eslint src/",
+    "lint:fix": "eslint src/ --fix"
   },
   "repository": {
     "type": "git",
@@ -50,11 +52,14 @@
     "express": "^5.0.0"
   },
   "devDependencies": {
+    "@eslint/js": "^9.39.2",
     "@types/express": "^5.0.6",
     "@types/node": "^25.0.8",
     "esbuild": "^0.27.2",
+    "eslint": "^9.39.2",
     "nodemon": "^3.1.11",
     "typescript": "^5.9.3",
+    "typescript-eslint": "^8.53.0",
     "vitest": "^4.0.17"
   }
 }
