@@ -72,7 +72,7 @@ export default class ValidObject<T, N = T | undefined> {
             if (e instanceof ArgError) {
                 // Re-throw with nested field path
                 throw new ArgError(
-                    `${this._name}.${e.field.split('.').slice(1).join('.')}`,
+                    `${this._name}.${e.field}`,
                     e.code,
                     e.details,
                     e.params

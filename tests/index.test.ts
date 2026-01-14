@@ -144,7 +144,7 @@ describe('params()', () => {
                 params('id').number.required.value;
             } catch (e) {
                 expect((e as ArgError).code).toBe('REQUIRED');
-                expect((e as ArgError).field).toBe('params.id');
+                expect((e as ArgError).field).toBe('id');
             }
         });
     });

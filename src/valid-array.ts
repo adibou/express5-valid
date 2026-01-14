@@ -164,9 +164,8 @@ export default class ValidArray<T = unknown, N = T[] | undefined> {
             } catch (e) {
                 if (e instanceof ArgError) {
                     // Re-throw with nested field path including index
-                    const nestedField = e.field.split('.').slice(1).join('.');
                     throw new ArgError(
-                        `${this._name}[${index}].${nestedField}`,
+                        `${this._name}[${index}].${e.field}`,
                         e.code,
                         e.details,
                         e.params
