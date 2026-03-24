@@ -1,14 +1,15 @@
-import { Router, Request, Response, NextFunction } from 'express';
+import { Router, Request, Response, NextFunction, RequestHandler } from 'express';
 import { requestStorage, RequestContext } from './middleware';
 
 type JsonHandler = (req: Request, res: Response) => unknown | Promise<unknown>;
+type Middleware = RequestHandler;
 
 export interface JsonRouter {
-    get: (path: string, handler: JsonHandler) => JsonRouter;
-    post: (path: string, handler: JsonHandler) => JsonRouter;
-    put: (path: string, handler: JsonHandler) => JsonRouter;
-    patch: (path: string, handler: JsonHandler) => JsonRouter;
-    delete: (path: string, handler: JsonHandler) => JsonRouter;
+    get: (path: string, handler: JsonHandler, ...middlewares: Middleware[]) => JsonRouter;
+    post: (path: string, handler: JsonHandler, ...middlewares: Middleware[]) => JsonRouter;
+    put: (path: string, handler: JsonHandler, ...middlewares: Middleware[]) => JsonRouter;
+    patch: (path: string, handler: JsonHandler, ...middlewares: Middleware[]) => JsonRouter;
+    delete: (path: string, handler: JsonHandler, ...middlewares: Middleware[]) => JsonRouter;
     router: Router;
 }
 
@@ -45,24 +46,24 @@ export function createJsonRouter(): JsonRouter {
 
     const jsonRouter: JsonRouter = {
         router: expressRouter,
-        get: (path, handler) => {
-            expressRouter.get(path, wrapHandler(handler));
+        get: (path, handler, ...middlewares) => {
+            expressRouter.get(path, ...middlewares, wrapHandler(handler));
             return jsonRouter;
         },
-        post: (path, handler) => {
-            expressRouter.post(path, wrapHandler(handler));
+        post: (path, handler, ...middlewares) => {
+            expressRouter.post(path, ...middlewares, wrapHandler(handler));
             return jsonRouter;
         },
-        put: (path, handler) => {
-            expressRouter.put(path, wrapHandler(handler));
+        put: (path, handler, ...middlewares) => {
+            expressRouter.put(path, ...middlewares, wrapHandler(handler));
             return jsonRouter;
         },
-        patch: (path, handler) => {
-            expressRouter.patch(path, wrapHandler(handler));
+        patch: (path, handler, ...middlewares) => {
+            expressRouter.patch(path, ...middlewares, wrapHandler(handler));
             return jsonRouter;
         },
-        delete: (path, handler) => {
-            expressRouter.delete(path, wrapHandler(handler));
+        delete: (path, handler, ...middlewares) => {
+            expressRouter.delete(path, ...middlewares, wrapHandler(handler));
             return jsonRouter;
         },
     };

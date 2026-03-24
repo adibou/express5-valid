@@ -3,7 +3,8 @@ import { body, createJsonRouter, params, validArgument } from "../src/index.js";
 const api = createJsonRouter();
 
 // Exemple de route avec validation body
-api.post('/users', () => {
+api.post('/users', (req) => {
+    console.log(req.body);
     const name = body('name').string.required.value;
     const age = body('age').number.max(150).value;
 

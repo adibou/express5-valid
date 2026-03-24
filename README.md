@@ -2,11 +2,32 @@
 
 Librairie de validation type-safe pour Express.js 5.0+
 
+Compatible Node.js 18+
+
 ## Installation
 
 ```bash
 npm install express5-valid express@^5.0.0
 ```
+
+## Publication npm
+
+Checklist minimale avant de publier :
+
+```bash
+npm whoami
+npm run prepublishOnly
+npm pack --dry-run
+```
+
+Publication :
+
+```bash
+npm version patch
+npm publish
+```
+
+Si le nom du package est déjà pris sur npm, il faudra le renommer dans package.json avant publication.
 
 ## Configuration
 
