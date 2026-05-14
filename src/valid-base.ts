@@ -3,6 +3,8 @@ import ValidString from "./valid-string";
 import ValidBoolean from "./valid-boolean";
 import ValidArray from "./valid-array";
 import ValidDate from "./valid-date";
+import ValidIsoDate from "./valid-iso-date";
+import ValidWallTime from "./valid-wall-time";
 import ValidEnum from "./valid-enum";
 import ValidObject, { type ObjectValidator } from "./valid-object";
 
@@ -33,6 +35,14 @@ export default class ValidBase {
 
     get date(): ValidDate {
         return new ValidDate(this._value, this._name);
+    }
+
+    get isoDate(): ValidIsoDate {
+        return new ValidIsoDate(this._value, this._name);
+    }
+
+    get wallTime(): ValidWallTime {
+        return new ValidWallTime(this._value, this._name);
     }
 
     enum<V extends string | number>(allowedValues: V[]): ValidEnum<V> {

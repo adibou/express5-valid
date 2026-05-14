@@ -5,6 +5,8 @@ import ValidString from '../src/valid-string';
 import ValidBoolean from '../src/valid-boolean';
 import ValidArray from '../src/valid-array';
 import ValidDate from '../src/valid-date';
+import ValidIsoDate from '../src/valid-iso-date';
+import ValidWallTime from '../src/valid-wall-time';
 import ValidEnum from '../src/valid-enum';
 import ValidObject from '../src/valid-object';
 
@@ -48,6 +50,22 @@ describe('ValidBase', () => {
 
         expect(dateValidator).toBeInstanceOf(ValidDate);
         expect(dateValidator.value).toEqual(date);
+    });
+
+    it('should create ValidIsoDate from .isoDate', () => {
+        const base = new ValidBase('2026-06-15', 'startDate');
+        const isoDate = base.isoDate;
+
+        expect(isoDate).toBeInstanceOf(ValidIsoDate);
+        expect(isoDate.value).toBe('2026-06-15');
+    });
+
+    it('should create ValidWallTime from .wallTime', () => {
+        const base = new ValidBase('2026-06-15T08:00:00', 'appointmentAt');
+        const wallTime = base.wallTime;
+
+        expect(wallTime).toBeInstanceOf(ValidWallTime);
+        expect(wallTime.value).toBe('2026-06-15T08:00:00');
     });
 
     it('should create ValidEnum from .enum()', () => {
