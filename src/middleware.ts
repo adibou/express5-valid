@@ -4,6 +4,7 @@ import type { Request, Response, NextFunction } from "express";
 export interface RequestContext {
     body: unknown;
     params: Record<string, unknown>;
+    query: Record<string, unknown>;
 }
 
 export const requestStorage = new AsyncLocalStorage<RequestContext>();
@@ -20,6 +21,7 @@ export function validMiddleware(req: Request, _res: Response, next: NextFunction
     const context: RequestContext = {
         body: req.body,
         params: req.params as Record<string, unknown>,
+        query: req.query as Record<string, unknown>,
     };
 
     requestStorage.run(context, next);

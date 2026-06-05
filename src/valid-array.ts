@@ -21,6 +21,7 @@ export default class ValidArray<T = unknown, N = T[] | undefined> {
     private _minLength: number | undefined;
     private _maxLength: number | undefined;
     private _elementValidator: ((val: unknown, index: number) => unknown) | undefined;
+    private _csvSeparator: string | undefined;
 
     constructor(value: unknown, name: string) {
         this._value = value;
@@ -62,6 +63,11 @@ export default class ValidArray<T = unknown, N = T[] | undefined> {
 
     maxLength(n: number): this {
         this._maxLength = n;
+        return this;
+    }
+
+    csv(separator: string = ','): this {
+        this._csvSeparator = separator;
         return this;
     }
 
@@ -137,6 +143,24 @@ export default class ValidArray<T = unknown, N = T[] | undefined> {
         return this as unknown as ValidArray<string, ArrayNullability<string, N>>;
     }
 
+    ofEnum<V extends string | number>(allowedValues: readonly V[]): ValidArray<V, ArrayNullability<V, N>> {
+        this._elementValidator = (val: unknown, index: number) => {
+            if (typeof val !== 'string' && typeof val !== 'number') {
+                this.elementError('INVALID_TYPE', 'must be a string or number', index, { expected: 'string|number' });
+            }
+            if (!allowedValues.includes(val as V)) {
+                this.elementError(
+                    'INVALID_ENUM_VALUE',
+                    `must be one of: ${allowedValues.join(', ')}`,
+                    index,
+                    { allowed: [...allowedValues] },
+                );
+            }
+            return val as V;
+        };
+        return this as unknown as ValidArray<V, ArrayNullability<V, N>>;
+    }
+
     ofBooleans(): ValidArray<boolean, ArrayNullability<boolean, N>> {
         this._elementValidator = (val: unknown, index: number) => {
             if (typeof val === 'boolean') {
@@ -199,6 +223,12 @@ export default class ValidArray<T = unknown, N = T[] | undefined> {
                 this.error('NOT_NULLABLE', 'cannot be null');
             }
             return null as N;
+        }
+
+        // CSV: split a string input into an array on the configured separator.
+        // Filter empty segments so `?p=` becomes [] and trailing `,` is tolerated.
+        if (this._csvSeparator !== undefined && typeof val === 'string') {
+            val = val.split(this._csvSeparator).filter((s) => s !== '');
         }
 
         // Must be array

@@ -253,6 +253,53 @@ describe('ValidArray', () => {
         });
     });
 
+    describe('ofEnum', () => {
+        const COLORS = ['red', 'green', 'blue'] as const;
+
+        it('should validate array of allowed string enum values', () => {
+            const validator = new ValidArray(['red', 'blue'], 'items').ofEnum(COLORS);
+            expect(validator.value).toEqual(['red', 'blue']);
+        });
+
+        it('should accept readonly tuple as allowed values', () => {
+            // Sanity check: `as const` arrays compile against `readonly V[]`.
+            const validator = new ValidArray(['red'], 'items').ofEnum(COLORS);
+            expect(validator.value).toEqual(['red']);
+        });
+
+        it('should accept a plain (non-readonly) array', () => {
+            const validator = new ValidArray([1, 2], 'items').ofEnum([1, 2, 3]);
+            expect(validator.value).toEqual([1, 2]);
+        });
+
+        it('should throw INVALID_ENUM_VALUE for unknown value', () => {
+            const validator = new ValidArray(['red', 'purple'], 'items').ofEnum(COLORS);
+
+            expect(() => validator.value).toThrow(ArgError);
+            try {
+                validator.value;
+            } catch (e) {
+                expect((e as ArgError).code).toBe('ARRAY_ELEMENT');
+                expect((e as ArgError).params.index).toBe(1);
+                expect((e as ArgError).params.code).toBe('INVALID_ENUM_VALUE');
+                expect((e as ArgError).params.allowed).toEqual(['red', 'green', 'blue']);
+            }
+        });
+
+        it('should throw INVALID_TYPE for non-string/non-number element', () => {
+            const validator = new ValidArray(['red', true], 'items').ofEnum(COLORS);
+
+            expect(() => validator.value).toThrow(ArgError);
+            try {
+                validator.value;
+            } catch (e) {
+                expect((e as ArgError).code).toBe('ARRAY_ELEMENT');
+                expect((e as ArgError).params.index).toBe(1);
+                expect((e as ArgError).params.code).toBe('INVALID_TYPE');
+            }
+        });
+    });
+
     describe('ofBooleans', () => {
         it('should validate array of booleans', () => {
             const validator = new ValidArray([true, false, true], 'items').ofBooleans();

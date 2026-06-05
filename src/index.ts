@@ -27,6 +27,11 @@ export function params(name: string): ValidBase {
     return validArgument(ctx.params, name);
 }
 
+export function query(name: string): ValidBase {
+    const ctx = getContext();
+    return validArgument(ctx.query, name);
+}
+
 export function validArgument(obj: Record<string, unknown>, name: string): ValidBase {
     return new ValidBase(obj[name], name);
 }

@@ -19,6 +19,7 @@ function wrapHandler(handler: JsonHandler) {
         const context: RequestContext = {
             body: req.body,
             params: req.params as Record<string, unknown>,
+            query: req.query as Record<string, unknown>,
         };
 
         requestStorage.run(context, async () => {
