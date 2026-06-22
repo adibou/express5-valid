@@ -45,7 +45,7 @@ export default class ValidBase {
         return new ValidWallTime(this._value, this._name);
     }
 
-    enum<V extends string | number>(allowedValues: V[]): ValidEnum<V> {
+    enum<V extends string | number>(allowedValues: readonly V[]): ValidEnum<V> {
         return new ValidEnum<V>(this._value, this._name, allowedValues);
     }
 

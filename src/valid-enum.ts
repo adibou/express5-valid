@@ -3,12 +3,12 @@ import ArgError, { type ErrorParams } from "./arg-error";
 export default class ValidEnum<V extends string | number, T = V | undefined> {
     private _value: unknown;
     private _name: string;
-    private _allowedValues: V[];
+    private _allowedValues: readonly V[];
     private _isRequired = false;
     private _isNullable = false;
     private _default: V | undefined;
 
-    constructor(value: unknown, name: string, allowedValues: V[]) {
+    constructor(value: unknown, name: string, allowedValues: readonly V[]) {
         this._value = value;
         this._name = name;
         this._allowedValues = allowedValues;
